@@ -530,6 +530,40 @@ export default class PDFDocument {
   }
 
   /**
+   * Set a custom metadata field in this document's Info Dictionary. The field
+   * will be stored as a key-value pair where the key is a PDF name and the
+   * value is a string. For example:
+   * ```js
+   * pdfDoc.setCustomMetadata('CustomField', 'Custom value 🔥')
+   * ```
+   * @param name The name of the custom metadata field.
+   * @param value The value of the custom metadata field.
+   */
+  setCustomMetadata(name: string, value: string): void {
+    assertIs(name, 'name', ['string']);
+    assertIs(value, 'value', ['string']);
+    this.getInfoDict().set(PDFName.of(name), PDFHexString.fromText(value));
+  }
+
+  /**
+   * Get a custom metadata field from this document's Info Dictionary. For
+   * example:
+   * ```js
+   * const value = pdfDoc.getCustomMetadata('CustomField')
+   * ```
+   * @param name The name of the custom metadata field.
+   * @returns A string containing the value of the custom metadata field, or
+   *          `undefined` if no such field exists.
+   */
+  getCustomMetadata(name: string): string | undefined {
+    assertIs(name, 'name', ['string']);
+    const value = this.getInfoDict().lookup(PDFName.of(name));
+    if (!value) return undefined;
+    assertIsLiteralOrHexString(value);
+    return value.decodeText();
+  }
+
+  /**
    * Get the number of pages contained in this document. For example:
    * ```js
    * const totalPages = pdfDoc.getPageCount()

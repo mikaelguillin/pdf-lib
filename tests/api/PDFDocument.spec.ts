@@ -300,6 +300,29 @@ describe(`PDFDocument`, () => {
         new Date('2018-01-04T01:05:06.000Z'),
       );
     });
+
+    it(`can set and get custom metadata fields`, async () => {
+      const pdfDoc = await PDFDocument.create();
+
+      expect(pdfDoc.getCustomMetadata('CustomField')).toBeUndefined();
+
+      pdfDoc.setCustomMetadata('CustomField', 'Custom value 🔥');
+      pdfDoc.setCustomMetadata('AnotherField', 'Another value');
+
+      expect(pdfDoc.getCustomMetadata('CustomField')).toBe('Custom value 🔥');
+      expect(pdfDoc.getCustomMetadata('AnotherField')).toBe('Another value');
+      expect(pdfDoc.getCustomMetadata('NonExistentField')).toBeUndefined();
+    });
+
+    it(`custom metadata shares the same Info Dictionary as standard metadata fields`, async () => {
+      const pdfDoc = await PDFDocument.create();
+
+      pdfDoc.setTitle('My Title');
+      pdfDoc.setCustomMetadata('Title', 'Custom Title');
+
+      expect(pdfDoc.getTitle()).toBe('Custom Title');
+      expect(pdfDoc.getCustomMetadata('Title')).toBe('Custom Title');
+    });
   });
 
   describe(`ViewerPreferences`, () => {
