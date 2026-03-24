@@ -317,9 +317,12 @@ describe(`PDFDocument`, () => {
     it(`custom metadata shares the same Info Dictionary as standard metadata fields`, async () => {
       const pdfDoc = await PDFDocument.create();
 
+      // Standard setter → custom getter
       pdfDoc.setTitle('My Title');
-      pdfDoc.setCustomMetadata('Title', 'Custom Title');
+      expect(pdfDoc.getCustomMetadata('Title')).toBe('My Title');
 
+      // Custom setter → standard getter
+      pdfDoc.setCustomMetadata('Title', 'Custom Title');
       expect(pdfDoc.getTitle()).toBe('Custom Title');
       expect(pdfDoc.getCustomMetadata('Title')).toBe('Custom Title');
     });

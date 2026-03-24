@@ -44,6 +44,8 @@ export default async (assets: Assets) => {
   pdfDoc.setCreator('PDF App 9000 🤖');
   pdfDoc.setCreationDate(new Date('2018-06-24T01:58:37.228Z'));
   pdfDoc.setModificationDate(new Date('2018-12-21T07:00:11.000Z'));
+  pdfDoc.setCustomMetadata('CustomField', 'Custom metadata value 🔥');
+  pdfDoc.setCustomMetadata('Department', 'Engineering');
 
   pdfDoc.registerFontkit(fontkit);
 
@@ -656,6 +658,8 @@ export default async (assets: Assets) => {
   console.log('Producer:', pdfDoc.getProducer());
   console.log('Creation Date:', pdfDoc.getCreationDate());
   console.log('Modification Date:', pdfDoc.getModificationDate());
+  console.log('CustomField:', pdfDoc.getCustomMetadata('CustomField'));
+  console.log('Department:', pdfDoc.getCustomMetadata('Department'));
 
   /********************** Export PDF **********************/
 
